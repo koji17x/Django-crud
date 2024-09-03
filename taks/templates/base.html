@@ -17,17 +17,7 @@
             align-items: center;
         }
         .nav-link i {
-            margin-right: 0.5rem; /* Espaciado entre el icono y el texto */
-        }
-        .nav-link.align-left i {
-            margin-right: 0.5rem; /* Espaciado entre el icono y el texto */
-        }
-        .nav-link.align-right i {
-            margin-left: 0.5rem; /* Espaciado para el icono alineado a la derecha */
-        }
-        .nav-link.logout i {
-            margin-left: 0.5rem; /* Espaciado específico para el enlace de salir */
-            margin-right: 0; /* Eliminar margen derecho para alinear a la derecha */
+            margin-left: 0.5rem; /* Espaciado entre el texto y el icono */
         }
     </style>
 </head>
@@ -46,40 +36,40 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-left">Inicio
+                        <a href="/" class="nav-link">Inicio
                             <i class="fa fa-home" aria-hidden="true"></i>
                         </a>
                     </li>
 
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{% url 'tasks' %}" class="nav-link align-left">Tareas pendientes
+                        <a href="{% url 'tasks' %}" class="nav-link">Tareas pendientes
                             <i class="fa fa-tasks" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'tasks_completed' %}" class="nav-link align-left">Tareas completadas
-                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                        <a href="{% url 'tasks_completed' %}" class="nav-link">Tareas completadas
+                            <i class="fa fa-check-square" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'create_task' %}" class="nav-link align-left">Crear tareas
-                            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                        <a href="{% url 'create_task' %}" class="nav-link">Crear tareas
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'logout' %}" class="nav-link logout">Salir
+                        <a href="{% url 'logout' %}" class="nav-link">Salir
                             <i class="fa fa-sign-out" aria-hidden="true"></i>
                         </a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a href="{% url 'signup' %}" class="nav-link align-left">Registrarse
+                        <a href="{% url 'signup' %}" class="nav-link">Registrarse
                             <i class="fa fa-user-plus" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'signin' %}" class="nav-link align-left">Iniciar sesión
+                        <a href="{% url 'signin' %}" class="nav-link">Iniciar sesión
                             <i class="fa fa-sign-in" aria-hidden="true"></i>
                         </a>
                     </li>
