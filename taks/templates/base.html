@@ -34,7 +34,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a href="/" class="nav-link">Inicio
                             <i class="fa fa-home" aria-hidden="true"></i>
@@ -49,12 +49,12 @@
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'tasks_completed' %}" class="nav-link">Tareas completadas
-                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                            <i class="fa fa-check-square" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'create_task' %}" class="nav-link">Crear tareas
-                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <i class="fa fa-plus-square" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -65,7 +65,7 @@
                     {% else %}
                     <li class="nav-item">
                         <a href="{% url 'signup' %}" class="nav-link">Registrarse
-                            <i class="fa fa-registered" aria-hidden="true"></i>
+                            <i class="fa fa-user-plus" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li class="nav-item">
