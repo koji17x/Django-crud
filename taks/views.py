@@ -27,7 +27,7 @@ def signup(request):
                     username=request.POST["username"], password=request.POST["password1"])
                 user.save()
                 login(request, user)
-                return redirect("tasks", {"tasks_type":"Tareas Pendientes"})
+                return redirect("tasks")
             except IntegrityError:
                 return render(request, "signup.html", {
                     "form": UserCreationForm,
@@ -65,7 +65,7 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect("tasks", {"tasks_type":"Tareas Pendientes"})
+            return redirect("tasks")
 
 @login_required
 def create_task(request):
@@ -79,7 +79,7 @@ def create_task(request):
             new_task = form.save(commit=False)
             new_task.user = request.user
             new_task.save()
-            return redirect("tasks", {"tasks_type":"Tareas Pendientes"})
+            return redirect("tasks")
         except ValueError:
             return render(request, "create_task.html", {
                 "form": taskform,
@@ -107,14 +107,14 @@ def complete_task(request, task_id):
     if request.method == "POST":
         task.datacompleted = timezone.now()
         task.save()
-        return redirect("tasks", {"tasks_type":"Tareas Completadas"})
+        return redirect("tasks")
 
 @login_required
 def delete_task (request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
     if request.method == "POST":
         task.delete()
-        return redirect("tasks", {"tasks_type":"Tareas Pendientes"})
+        return redirect("tasks")
     
 
 @login_required    
