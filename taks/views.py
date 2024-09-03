@@ -121,4 +121,3 @@ def delete_task (request, task_id):
 def tasks_completed(request):
     tasks = Task.objects.filter(user=request.user, datacompleted__isnull=False).order_by("-datacompleted")
     return render(request, "tasks.html", {"tasks": tasks, "tasks_type":"Tareas Completadas"})
-
