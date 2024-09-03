@@ -42,7 +42,7 @@ def signup(request):
 @login_required
 def tasks(request):
     tasks = Task.objects.filter(user=request.user, datacompleted__isnull=True)
-    return render(request, "tasks.html", {"tasks": tasks})
+    return render(request, "tasks.html", {"tasks": tasks, "tasks_type":"Tareas Pendientes"})
 
 @login_required
 def signout(request):
@@ -79,7 +79,7 @@ def create_task(request):
             new_task = form.save(commit=False)
             new_task.user = request.user
             new_task.save()
-            return redirect("tasks")
+            return redirect("tasks", {"tasks_type":"Tareas Pendientes"})
         except ValueError:
             return render(request, "create_task.html", {
                 "form": taskform,
