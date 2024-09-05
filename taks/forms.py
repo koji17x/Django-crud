@@ -16,6 +16,6 @@ class taskform(forms.ModelForm):
             "description": forms.Textarea(attrs={"class": "form-control", "placeholder": "Escribe una descripción"}),
             "important": forms.CheckboxInput(attrs={
                 "class": "form-check-input",
-                "style": "border: 2px solid #000; padding: 5px; border-radius: 5px;"
+                "style": "border: 2px solid #000; padding: 5px; border-radius: 2px;"
             })
         }
