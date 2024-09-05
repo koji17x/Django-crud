@@ -1,5 +1,5 @@
 body {
-    background-image: url("C:/Users/Jandry/Desktop/django-crud/taks/static/images/background.jpg");
+    background-image: url("../images/background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
