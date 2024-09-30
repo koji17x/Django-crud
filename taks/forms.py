@@ -10,13 +10,13 @@ class taskform(forms.ModelForm):
             "title": "Título",
             "description": "Descripción",
             "important": "Importante",
-            "date_due": "Tiempo",
+            "due_date": "Fecha de vencimiento",
             "category": "Categoria",
         }
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Escribe un título"}),
             "description": forms.Textarea(attrs={"class": "form-control", "placeholder": "Escribe una descripción"}),
-            "date_due": forms.DateTimeInput(attrs={ "class": "form-control", "placeholder": "Tiempo de vencimiento"}),
+            "due_date": forms.DateTimeInput(attrs={ "class": "form-control", "placeholder": "Tiempo de vencimiento"}),
             "status" : forms.TextInput(attrs={"class": "form-control", "placeholder": "Categoria"}),
             "important": forms.CheckboxInput(attrs={
                 "class": "form-check-input",
