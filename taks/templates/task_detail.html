@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <main class="container">
     <div class="row">
         <div class="col-md-4 offset-md-4">
-            <h1>{{task.title}}</h1>
+            <h1>{{ task.title }}</h1>
 
-            {{error}}
+            <!-- Mostrar mensajes de error si existen -->
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
 
             <form method="POST">
                 {% csrf_token %}
-                {{form.as_p}}
-                <button class="btn btn-primary">
+                {{ form.as_p }}
+                <button class="btn btn-primary" name="save_task" {% if task.datacompleted %} disabled {% endif %}>
                     Actualizar
                 </button>
             </form>
@@ -20,20 +24,51 @@
             <div class="d-flex justify-content-between mt-1">
                 <form action="{% url 'complete_task' task.id %}" method="POST">
                     {% csrf_token %}
-                    <button class="btn btn-success">
+                    <button class="btn btn-success" {% if task.datacompleted %} disabled {% endif %}>
                         Completar
                     </button>
                 </form>
-    
+                
                 <form action="{% url 'delete_task' task.id %}" method="POST">
                     {% csrf_token %}
                     <button class="btn btn-danger">
                         Eliminar
                     </button>
-                </form> 
+                </form>
             </div>
+
+            <!-- Formulario para agregar avances -->
+            <hr>
+            <h3>Avances</h3>
+
+            {% if task.datacompleted %}
+                <!-- Mostrar mensaje si la tarea está completada -->
+                <div class="alert alert-info">
+                    Esta tarea está completada. No se pueden agregar más avances.
+                </div>
+            {% else %}
+                <!-- Mostrar formulario de avances si la tarea no está completada -->
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ advance_form.as_p }}
+                    <button class="btn btn-secondary" name="add_advance" >
+                        Agregar Avance
+                    </button>
+                </form>
+            {% endif %}
+
+            <!-- Mostrar avances existentes -->
+            <ul class="list-group mt-3">
+                {% for advance in advances %}
+                    <li class="list-group-item">
+                        <strong>{{ advance.date }}:</strong> {{ advance.progress_description }}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No hay avances registrados para esta tarea.</li>
+                {% endfor %}
+            </ul>
+
         </div>
     </div>
 </main>
-
 {% endblock %}

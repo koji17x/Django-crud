@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
-from .forms import taskform
-from .models import Task
+from .forms import taskform, AdvanceForm
+from .models import Task, Advance
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -88,18 +88,36 @@ def create_task(request):
 
 @login_required
 def task_detail(request, task_id):
+    task = get_object_or_404(Task, pk=task_id, user=request.user)
+    advances = Advance.objects.filter(task=task)
+    error = None  # Variable para gestionar mensajes de error
+    
     if request.method == "GET":
-        task = get_object_or_404(Task, pk=task_id, user=request.user)
         form = taskform(instance=task)
-        return render(request, "task_detail.html", {"task": task, "form": form})
-    else:
-        try:
-            task = get_object_or_404(Task, pk=task_id, user=request.user)
+        advance_form = AdvanceForm()
+        return render(request, "task_detail.html", {"task": task, "form": form, "advance_form": advance_form, "advances": advances, "error": error})
+    
+    elif request.method == "POST":
+        if 'save_task' in request.POST:  # Guardar cambios en la tarea
             form = taskform(request.POST, instance=task)
-            form.save()
-            return redirect("tasks")
-        except ValueError:
-            return render(request, "task_detail.html", {"task": task, "form": form, "error": "Error actualizando tarea"})
+            if form.is_valid():
+                form.save()
+                return redirect("tasks")
+
+        elif 'add_advance' in request.POST:  # Agregar un avance
+            if task.datacompleted:  # Si la tarea está completada
+                error = "No puedes agregar avances a una tarea completada."
+            else:
+                advance_form = AdvanceForm(request.POST)
+                if advance_form.is_valid():
+                    new_advance = advance_form.save(commit=False)
+                    new_advance.task = task
+                    new_advance.save()
+                    return redirect("task_detail", task_id=task.id)
+                
+    form = taskform(instance=task)
+    advance_form = AdvanceForm()
+    return render(request, "task_detail.html", {"task": task, "form": form, "advance_form": advance_form, "advances": advances, "error": "Error al procesar la solicitud"})
 
 @login_required
 def complete_task(request, task_id):
