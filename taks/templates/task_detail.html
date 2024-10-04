@@ -6,7 +6,6 @@
         <div class="col-md-4 offset-md-4">
             <h1>{{ task.title }}</h1>
 
-            <!-- Mostrar mensajes de error si existen -->
             {% if error %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -17,7 +16,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button class="btn btn-primary" name="save_task" {% if task.datacompleted %} disabled {% endif %}>
-                    Actualizar
+                    Actualizar <i class="bi bi-arrow-up-circle"></i>
                 </button>
             </form>
 
@@ -25,48 +24,51 @@
                 <form action="{% url 'complete_task' task.id %}" method="POST">
                     {% csrf_token %}
                     <button class="btn btn-success" {% if task.datacompleted %} disabled {% endif %}>
-                        Completar
+                        Completar <i class="bi bi-check-circle"></i>
                     </button>
                 </form>
-                
+            </div>
+            
+            <div class="d-flex justify-content-between mt-1">
+                <button class="btn btn-warning mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#advancesCollapse" aria-expanded="false" aria-controls="advancesCollapse">
+                    Ver avances <i class="bi bi-hand-index"></i>
+                </button>
+
                 <form action="{% url 'delete_task' task.id %}" method="POST">
                     {% csrf_token %}
                     <button class="btn btn-danger">
-                        Eliminar
+                        Eliminar <i class="bi bi-x-circle"></i>
                     </button>
                 </form>
             </div>
 
-            <!-- Formulario para agregar avances -->
-            <hr>
-            <h3>Avances</h3>
+            <div class="collapse" id="advancesCollapse">
+                <hr>
+                <h3>Avances</h3>
+                {% if task.datacompleted %}
+                    <div class="alert alert-info">
+                        Esta tarea está completada. No se pueden agregar más avances.
+                    </div>
+                {% else %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ advance_form.as_p }}
+                        <button class="btn btn-success" name="add_advance">
+                            Agregar Avance <i class="bi bi-plus-circle"></i>
+                        </button>
+                    </form>
+                {% endif %}
 
-            {% if task.datacompleted %}
-                <!-- Mostrar mensaje si la tarea está completada -->
-                <div class="alert alert-info">
-                    Esta tarea está completada. No se pueden agregar más avances.
-                </div>
-            {% else %}
-                <!-- Mostrar formulario de avances si la tarea no está completada -->
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ advance_form.as_p }}
-                    <button class="btn btn-secondary" name="add_advance" >
-                        Agregar Avance
-                    </button>
-                </form>
-            {% endif %}
-
-            <!-- Mostrar avances existentes -->
-            <ul class="list-group mt-3">
-                {% for advance in advances %}
-                    <li class="list-group-item">
-                        <strong>{{ advance.date }}:</strong> {{ advance.progress_description }}
-                    </li>
-                {% empty %}
-                    <li class="list-group-item">No hay avances registrados para esta tarea.</li>
-                {% endfor %}
-            </ul>
+                <ul class="list-group mt-3">
+                    {% for advance in advances %}
+                        <li class="list-group-item">
+                            <strong>{{ advance.date }}:</strong> {{ advance.progress_description }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No hay avances registrados para esta tarea.</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
         </div>
     </div>

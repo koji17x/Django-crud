@@ -7,7 +7,6 @@ from .forms import taskform, AdvanceForm
 from .models import Task, Advance
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-# Create your views here.
 
 
 def home(request):
@@ -90,7 +89,7 @@ def create_task(request):
 def task_detail(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
     advances = Advance.objects.filter(task=task)
-    error = None  # Variable para gestionar mensajes de error
+    error = None
     
     if request.method == "GET":
         form = taskform(instance=task)
@@ -98,14 +97,14 @@ def task_detail(request, task_id):
         return render(request, "task_detail.html", {"task": task, "form": form, "advance_form": advance_form, "advances": advances, "error": error})
     
     elif request.method == "POST":
-        if 'save_task' in request.POST:  # Guardar cambios en la tarea
+        if 'save_task' in request.POST:
             form = taskform(request.POST, instance=task)
             if form.is_valid():
                 form.save()
                 return redirect("tasks")
 
-        elif 'add_advance' in request.POST:  # Agregar un avance
-            if task.datacompleted:  # Si la tarea está completada
+        elif 'add_advance' in request.POST:
+            if task.datacompleted:
                 error = "No puedes agregar avances a una tarea completada."
             else:
                 advance_form = AdvanceForm(request.POST)
@@ -135,7 +134,7 @@ def delete_task (request, task_id):
         return redirect("tasks")
     
 
-@login_required    
+@login_required
 def tasks_completed(request):
     tasks = Task.objects.filter(user=request.user, datacompleted__isnull=False).order_by("-datacompleted")
     return render(request, "tasks.html", {"tasks": tasks, "tasks_type":"Tareas Completadas"})
