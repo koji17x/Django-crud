@@ -1,6 +1,6 @@
 # forms.py
 from django import forms
-from .models import Task, Advance  # Asegúrate de importar ambos modelos
+from .models import Task, Advance
 
 
 class taskform(forms.ModelForm):
@@ -18,7 +18,7 @@ class taskform(forms.ModelForm):
             "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Escribe un título"}),
             "description": forms.Textarea(attrs={"class": "form-control", "placeholder": "Escribe una descripción"}),
             "due_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
-            "category": forms.Select(attrs={"class": "form-control"}),  # Cambiado a Select
+            "category": forms.Select(attrs={"class": "form-control"}),
             "important": forms.CheckboxInput(attrs={
                 "class": "form-check-input",
                 "style": "border: 1px solid #000; padding: 5px; border-radius: 5px;"
