@@ -90,19 +90,15 @@ def task_detail(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
     advances = Advance.objects.filter(task=task)
     error = None
-    
-    if request.method == "GET":
-        form = taskform(instance=task)
-        advance_form = AdvanceForm()
-        return render(request, "task_detail.html", {"task": task, "form": form, "advance_form": advance_form, "advances": advances, "error": error})
-    
-    elif request.method == "POST":
+    form = taskform(instance=task)
+    advance_form = AdvanceForm()
+
+    if request.method == "POST":
         if 'save_task' in request.POST:
             form = taskform(request.POST, instance=task)
             if form.is_valid():
                 form.save()
                 return redirect("tasks")
-
         elif 'add_advance' in request.POST:
             if task.datacompleted:
                 error = "No puedes agregar avances a una tarea completada."
@@ -113,10 +109,12 @@ def task_detail(request, task_id):
                     new_advance.task = task
                     new_advance.save()
                     return redirect("task_detail", task_id=task.id)
-                
-    form = taskform(instance=task)
-    advance_form = AdvanceForm()
-    return render(request, "task_detail.html", {"task": task, "form": form, "advance_form": advance_form, "advances": advances, "error": "Error al procesar la solicitud"})
+
+    return render(
+        request,
+        "task_detail.html",
+        {"task": task, "form": form, "advance_form": advance_form, "advances": advances, "error": error}
+    )
 
 @login_required
 def complete_task(request, task_id):
@@ -132,7 +130,6 @@ def delete_task (request, task_id):
     if request.method == "POST":
         task.delete()
         return redirect("tasks")
-    
 
 @login_required
 def tasks_completed(request):
